@@ -1,1 +1,1 @@
-Regula expressions
+Regular expressions

@@ -1,24 +1,21 @@
 #!/usr/bin/python3
-"""
-queries the Reddit API and returns the number
-of subscribers (not active users, total subscribers)
-for a given subreddit. If an invalid subreddit is given,
-the function should return 0.
-"""
+"""get subscribers numbers function"""
+
+
+import json
 import requests
+import sys
 
 
 def number_of_subscribers(subreddit):
-    """returns number of total subscribers"""
-    url = ("https://api.reddit.com/r/{}/about".format(subreddit))
-    headers = {'User-Agent': 'CustomClient/1.0'}
-    response = requests.get(url, headers=headers, allow_redirects=False)
-
-    if response.status_code != 200:
-        return (0)
-    response = response.json()
-    if 'data' in response:
-        return (response.get('data').get('subscribers'))
-
+    """get all subscribers"""
+    if len(sys.argv) < 2:
+        return 0
     else:
-        return (0)
+        url = "https://www.reddit.com/r/{}/about.json".format(subreddit)
+        headers = {"User-Agent": "Mozilla/5.0"}
+        result = requests.get(url, headers=headers, allow_redirects=False)
+        if result.status_code != 200:
+            return 0
+        body = json.loads(result.text)
+        return body["data"]["subscribers"]
